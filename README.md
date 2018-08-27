@@ -194,6 +194,7 @@ window.geofence.addOrUpdate({
         id:             Number, //optional should be integer, id of notification
         title:          String, //Title of notification
         text:           String, //Text of notification
+        channel:        String, // channel for notification
         smallIcon:      String, //Small icon showed in notification area, only res URI
         icon:           String, //icon showed in notification drawer
         openAppOnClick: Boolean,//is main app activity should be opened after clicking on notification
@@ -383,6 +384,7 @@ window.geofence.addOrUpdate({
     transitionType: TransitionType.ENTER,
     notification: {
         id:             1,
+        channel:        "myapp-geofence',
         title:          "Welcome in Gliwice",
         text:           "You just arrived to Gliwice city center.",
         openAppOnClick: true
