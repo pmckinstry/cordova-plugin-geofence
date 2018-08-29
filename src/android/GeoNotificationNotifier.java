@@ -73,8 +73,8 @@ public class GeoNotificationNotifier {
     private void createNotificationChannel(String channelId, String channelName, String channelDescription) {
         // Create the NotificationChannel, but only on API 26+ because
         // the NotificationChannel class is new and not in the support library
-        CharSequence name = context.getString(channelName!=null?channelName:channelId);
-        String description = context.getString(channelDescription!=null?channelDescription:channelId);
+        String name = channelName!=null?channelName:channelId;
+        String description = channelDescription!=null?channelDescription:channelId;
         int importance = NotificationManager.IMPORTANCE_DEFAULT;
         NotificationChannel channel = new NotificationChannel(channelId, name, importance);
         channel.setDescription(description);
