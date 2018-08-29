@@ -12,7 +12,6 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 import android.os.Build;
-import android.R.string;
 
 public class GeoNotificationNotifier {
     private NotificationManager notificationManager;
@@ -31,7 +30,7 @@ public class GeoNotificationNotifier {
         notification.setContext(context);
         NotificationCompat.Builder mBuilder = null;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            createNotificationChannel(notification.getChannel());
+            createNotificationChannel(notification.getChannel(), notification.getChannelName(), notification.getChannelDescription());
             mBuilder = new NotificationCompat.Builder(context, notification.getChannel());
         } else {
             mBuilder = new NotificationCompat.Builder(context);
@@ -71,18 +70,16 @@ public class GeoNotificationNotifier {
         logger.log(Log.DEBUG, notification.toString());
     }
 
-    private void createNotificationChannel(String channelId) {
-        if (!notificationManager.getChannel(channelId)) {
-            // Create the NotificationChannel, but only on API 26+ because
-            // the NotificationChannel class is new and not in the support library
-            CharSequence name = context.getString(R.string.channel_name);
-            String description = context.getString(R.string.channel_description);
-            int importance = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel channel = new NotificationChannel(channelId, name, importance);
-            channel.setDescription(description);
-            // Register the channel with the system; you can't change the importance
-            // or other notification behaviors after this
-            notificationManager.createNotificationChannel(channel);
-        }
+    private void createNotificationChannel(String channelId, String channelName, String channelDescription) {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        CharSequence name = context.getString(channelName!=null?channelName:channelId);
+        String description = context.getString(channelDescription!=null?channelDescription:channelId);
+        int importance = NotificationManager.IMPORTANCE_DEFAULT;
+        NotificationChannel channel = new NotificationChannel(channelId, name, importance);
+        channel.setDescription(description);
+        // Register the channel with the system; you can't change the importance
+        // or other notification behaviors after this
+        notificationManager.createNotificationChannel(channel);
     }
 }

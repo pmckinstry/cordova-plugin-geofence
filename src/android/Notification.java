@@ -19,6 +19,8 @@ public class Notification {
     @Expose public Object data;
     @Expose public boolean openAppOnClick;
     @Expose public String channel;
+    @Expose public String channelName;
+    @Expose public String channelDescription;
 
     public void setContext(Context context) {
         this.context = context;
@@ -30,11 +32,19 @@ public class Notification {
     }
 
     public String getTitle() {
-        return this.channel;
+        return this.title;
     }
 
     public String getChannel() {
-        return this.title;
+        return this.channel;
+    }
+
+    public String getChannelName() {
+        return this.channelName;
+    }
+
+    public String getChannelDescription() {
+        return this.channelDescription;
     }
 
     public int getSmallIcon() {
