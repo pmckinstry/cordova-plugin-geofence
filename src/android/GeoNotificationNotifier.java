@@ -26,13 +26,20 @@ public class GeoNotificationNotifier {
 
     public void notify(Notification notification) {
         notification.setContext(context);
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, notification.getChannel())
-            .setVibrate(notification.getVibrate())
+        NotificationCompat.Builder mBuilder = null;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            createNotificationChannel(notification.getChannel());
+            mBuilder = new NotificationCompat.Builder(context, notification.getChannel());
+        } else {
+            mBuilder = new NotificationCompat.Builder(context);
+        }
+        mBuilder.setVibrate(notification.getVibrate())
             .setSmallIcon(notification.getSmallIcon())
             .setLargeIcon(notification.getLargeIcon())
             .setAutoCancel(true)
             .setContentTitle(notification.getTitle())
             .setContentText(notification.getText());
+
 
         if (notification.openAppOnClick) {
             String packageName = context.getPackageName();
@@ -59,5 +66,21 @@ public class GeoNotificationNotifier {
         }
         notificationManager.notify(notification.id, mBuilder.build());
         logger.log(Log.DEBUG, notification.toString());
+    }
+
+    private void createNotificationChannel(String channelId) {
+        NotificationManager notificationManager = getSystemService(NotificationManager.class);
+        if (!notificationManager.getChannel(channelId)) {
+            // Create the NotificationChannel, but only on API 26+ because
+            // the NotificationChannel class is new and not in the support library
+            CharSequence name = context.getString(R.string.channel_name);
+            String description = context.getString(R.string.channel_description);
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(channelId, name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            notificationManager.createNotificationChannel(channel);
+        }
     }
 }
