@@ -1,6 +1,7 @@
 package com.cowbell.cordova.geofence;
 
 import android.app.NotificationManager;
+import android.app.NotificationChannel;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -10,6 +11,8 @@ import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
+import android.os.Build;
+import android.R.string;
 
 public class GeoNotificationNotifier {
     private NotificationManager notificationManager;
@@ -69,7 +72,6 @@ public class GeoNotificationNotifier {
     }
 
     private void createNotificationChannel(String channelId) {
-        NotificationManager notificationManager = getSystemService(NotificationManager.class);
         if (!notificationManager.getChannel(channelId)) {
             // Create the NotificationChannel, but only on API 26+ because
             // the NotificationChannel class is new and not in the support library
